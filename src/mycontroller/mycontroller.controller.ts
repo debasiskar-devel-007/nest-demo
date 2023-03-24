@@ -4,6 +4,7 @@ import { Controller, Get } from '@nestjs/common';
 export class MycontrollerController {
     @Get()
     findAll(): string {
-        return 'This action returns  mycontroller';
+        let val = { a: 'aa', b: 'bb' }
+        return JSON.stringify(val);
     }
 }
