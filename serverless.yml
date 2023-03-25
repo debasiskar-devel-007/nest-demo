@@ -1,0 +1,27 @@
+service: nest-demo
+
+plugins:
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: eu-west-1
+  profile: default
+  memorySize: 128 # optional, in MB, default is 1024
+  stage: dev
+
+functions:
+  main:
+    handler: dist/serverless.handler
+    events:
+      - http:
+          method: ANY
+          path: /
+      - http:
+          method: ANY
+          path: "{proxy+}"
+
+custom:
+  serverless-offline:
+    noPrependStageInUrl: true
