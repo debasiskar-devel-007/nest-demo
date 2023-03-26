@@ -35,5 +35,29 @@ export class SystemmonitorController {
             return response.status(err.status).json(err.response);
         }
     }
+    @Get('/:id')
+    async getStudent(@Res() response, @Param('id') studentId: string) {
+        try {
+            const existingRecord = await
+                this.systemmonitorservice.getdatabyid(studentId);
+            return response.status(HttpStatus.OK).json({
+                message: 'Record found successfully', existingRecord,
+            });
+        } catch (err) {
+            return response.status(err.status).json(err.response);
+        }
+    }
+    @Delete('/:id')
+    async deleteStudent(@Res() response, @Param('id') studentId: string) {
+        try {
+            const deletedStudent = await this.systemmonitorservice.deletedata(studentId);
+            return response.status(HttpStatus.OK).json({
+                message: 'Record deleted successfully',
+                deletedStudent,
+            });
+        } catch (err) {
+            return response.status(err.status).json(err.response);
+        }
+    }
 
 }
