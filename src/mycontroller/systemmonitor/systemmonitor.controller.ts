@@ -24,5 +24,16 @@ export class SystemmonitorController {
             });
         }
     }
+    @Get()
+    async getRecords(@Res() response) {
+        try {
+            const data = await this.systemmonitorservice.getAlldata();
+            return response.status(HttpStatus.OK).json({
+                message: 'All  data found successfully', data,
+            });
+        } catch (err) {
+            return response.status(err.status).json(err.response);
+        }
+    }
 
 }
