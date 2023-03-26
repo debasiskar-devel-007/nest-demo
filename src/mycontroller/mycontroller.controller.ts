@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Req } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
 import { MyserviceService } from 'src/myservice/myservice.service';
 
 
@@ -12,7 +12,18 @@ export class MycontrollerController {
         // return JSON.stringify(val);
 
 
-        return JSON.stringify({ 'result': this.myService.addfunction((query.val1) ? parseFloat(query.val1) : 0, query.val2 ? parseFloat(query.val2) : 0) });
+        return JSON.stringify({ 'result': this.myService.addfunction((query.val1) ? Number(query.val1) : 0, query.val2 ? Number(query.val2) : 0) });
 
+    }
+
+    @Get(':id')
+    findOne(@Param('id') id: string) {
+        return `This action returns a #${id} param`;
+    }
+
+    @Post()
+    create(@Body() data: any) {
+        console.log(data);
+        return 'data by post : ' + JSON.stringify(data);
     }
 }
