@@ -9,6 +9,8 @@ import { SystemMonitor, SystemMonitorSchema } from './mycontroller/system_monito
 import { SystemmonitorService } from './systemmonitor/systemmonitor.service';
 import { SystemmonitorController } from './mycontroller/systemmonitor/systemmonitor.controller';
 import { ConfigModule } from '@nestjs/config';
+import { HtmlcontrollerController } from './htmlcontroller/htmlcontroller.controller';
+import { FryrighthtmlController } from './fryrighthtml/fryrighthtml.controller';
 
 
 // mongodb+srv://<username>:<password>@cluster0.y0s0t.mongodb.net/test
@@ -21,7 +23,7 @@ import { ConfigModule } from '@nestjs/config';
     }),
   }),
     MongooseModule.forFeature([{ name: 'Systemmonitor', schema: SystemMonitorSchema }]), ConfigModule.forRoot({ envFilePath: '.env' })],
-  controllers: [AppController, MycontrollerController, SystemmonitorController],
+  controllers: [AppController, MycontrollerController, SystemmonitorController, HtmlcontrollerController, FryrighthtmlController],
   providers: [AppService, MyserviceService, SystemmonitorService],
 })
 export class AppModule { }
