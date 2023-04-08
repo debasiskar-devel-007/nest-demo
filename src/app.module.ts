@@ -11,6 +11,7 @@ import { SystemmonitorController } from './mycontroller/systemmonitor/systemmoni
 import { ConfigModule } from '@nestjs/config';
 import { HtmlcontrollerController } from './htmlcontroller/htmlcontroller.controller';
 import { FryrighthtmlController } from './fryrighthtml/fryrighthtml.controller';
+import { NestSessionOptions, SessionModule } from 'nestjs-session';
 
 
 // mongodb+srv://<username>:<password>@cluster0.y0s0t.mongodb.net/test
@@ -21,8 +22,15 @@ import { FryrighthtmlController } from './fryrighthtml/fryrighthtml.controller';
     useFactory: () => ({
       uri: process.env.CONNECTION_STRING,
     }),
+
   }),
-    MongooseModule.forFeature([{ name: 'Systemmonitor', schema: SystemMonitorSchema }]), ConfigModule.forRoot({ envFilePath: '.env' })],
+    MongooseModule.forFeature([{ name: 'Systemmonitor', schema: SystemMonitorSchema }]), ConfigModule.forRoot({ envFilePath: '.env' }),
+    SessionModule.forRoot({
+      session: { secret: 'keyboard cat' },
+    }),
+
+
+  ],
   controllers: [AppController, MycontrollerController, SystemmonitorController, HtmlcontrollerController, FryrighthtmlController],
   providers: [AppService, MyserviceService, SystemmonitorService],
 })

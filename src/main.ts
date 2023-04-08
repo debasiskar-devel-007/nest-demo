@@ -4,9 +4,11 @@ import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
-// import session from 'express-session';
+import session from 'express-session';
 import secureSession from '@fastify/secure-session';
-
+import cookieParser from 'cookie-parser';
+// import { IronSession } from "iron-session";
+import fastifyCookie from '@fastify/cookie';
 async function bootstrap() {
   // const app = await NestFactory.create<NestExpressApplication>(
   //   AppModule,
@@ -24,14 +26,26 @@ async function bootstrap() {
     salt: 'mq9hDxBVDbspDR6n',
   });
 
+  await app.register(fastifyCookie, {
+    secret: 'my-secret', // for cookies signature
+  });
 
-  // app.use(
-  //   session({
-  //     secret: 'my-secret',
-  //     resave: false,
-  //     saveUninitialized: false,
-  //   }),
-  // );
+  app.enableCors({
+    credentials: true,
+    origin: [
+      'http://localhost:3000',
+      'http://localhost:3001',
+    ],
+  });
+  app.use(cookieParser());
+
+  app.use(
+    session({
+      secret: 'my-secret',
+      resave: false,
+      saveUninitialized: true,
+    }),
+  );
 
 
   app.useStaticAssets({

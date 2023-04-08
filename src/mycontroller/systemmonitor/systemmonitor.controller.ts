@@ -3,7 +3,10 @@ import { CreateSystemMonitorDto } from 'src/mycontroller/create-systemmonitor.dt
 import { UpdateSystemMonitorDto } from 'src/mycontroller/update-systemmonitor.dto';
 import { SystemmonitorService } from 'src/systemmonitor/systemmonitor.service';
 import express from 'express';
+import fastify from 'fastify';
+
 import * as secureSession from '@fastify/secure-session'
+import { withIronSessionApiRoute } from "iron-session/next";
 @Controller('systemmonitor')
 export class SystemmonitorController {
 
@@ -29,6 +32,35 @@ export class SystemmonitorController {
 
         }
     }
+    @Get('/ts')
+    getViews(@Session() session: { views?: number }) {
+        session.views = (session.views || 0) + 1;
+        console.log(session.views);
+        return session.views;
+    }
+
+    @Get('/tc')
+    findAll(@Req() request: express.Request) {
+        console.log('cookies', request.cookies); // or "request.cookies['cookieKey']"
+        // or console.log(request.signedCookies);
+        return JSON.stringify(request.cookies);
+
+    }
+
+    @Get('/setcookie')
+    setcookie(@Res({ passthrough: true }) response: express.Response) {
+        response.cookie('user', 'kio');
+        // response.send('cookie set');
+
+
+    }
+
+    // @Get('/fsc')
+    // fsc(@Req() request: FastifyRequest) {
+    //     console.log(request.cookies); // or "request.cookies['cookieKey']"
+    // }
+
+
     @Get('/test')
     findOne(@Param('id') id: string) {
         return `This action returns a # param`;
@@ -38,7 +70,10 @@ export class SystemmonitorController {
     findSession(@Session() session: secureSession.Session,
         @Res() response: express.Response,
     ) {
-        let visits = session.get('visits');
+        let visits = 0;
+        console.log(visits, 'bf');
+        if (session != null && session.get('visits') != null) visits = session.get('visits');
+        console.log(visits, 'af');
         session.set('visits', visits ? visits + 1 : 1);
         visits = session.get('visits');
 
