@@ -1,8 +1,8 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Query, Req, Res } from '@nestjs/common';
 import { CreateSystemMonitorDto } from 'src/mycontroller/create-systemmonitor.dto';
 import { UpdateSystemMonitorDto } from 'src/mycontroller/update-systemmonitor.dto';
 import { SystemmonitorService } from 'src/systemmonitor/systemmonitor.service';
-
+import express from 'express';
 @Controller('systemmonitor')
 export class SystemmonitorController {
 
@@ -12,23 +12,54 @@ export class SystemmonitorController {
     async createRecord(@Res() response, @Body() CreateSystemMonitorDto: CreateSystemMonitorDto) {
         try {
             const newrecord = await this.systemmonitorservice.createsysemmonitor(CreateSystemMonitorDto);
-            return response.status(HttpStatus.CREATED).json({
-                message: 'Record has been created successfully',
-                newrecord,
-            });
+            // return response.status(HttpStatus.CREATED).json({
+            //     message: 'Record has been created successfully',
+            //     newrecord,
+            // });
+            return `This action returns a # param`;
+
         } catch (err) {
-            return response.status(HttpStatus.BAD_REQUEST).json({
-                statusCode: 400,
-                message: 'Error: Record not created!',
-                error: 'Bad Request' + err
-            });
+            // return response.status(HttpStatus.BAD_REQUEST).json({
+            //     statusCode: 400,
+            //     message: 'Error: Record not created!',
+            //     error: 'Bad Request' + err
+            // });
+            return `This action returns a # errro`;
+
         }
     }
-    @Get()
-    async getRecords(@Res() response) {
+    @Get('/test')
+    findOne(@Param('id') id: string) {
+        return `This action returns a # param`;
+    }
+
+    @Get('/getdata')
+    async getAllCategories(
+        @Req() request: express.Request,
+        @Res() response: express.Response,
+    ) {
+        console.log(`${request.method} ${request.url}`); // GET /categories
+
+        const data = await this.systemmonitorservice.getAlldata();
+        response.send(JSON.stringify(data));
+    }
+
+    @Get('/alldata')
+    async getRecords(
+        @Req() request: express.Request,
+        @Res() response: express.Response
+    ) {
+
+        const data = await this.systemmonitorservice.getAlldata();
+        console.log('dddd');
+        response.send(JSON.stringify(data));
+    }
+
+    @Get('/getall')
+    async getRecords2(@Res() response) {
         try {
             const data = await this.systemmonitorservice.getAlldata();
-            return response.status(HttpStatus.OK).json({
+            return response.status(200).json({
                 message: 'All  data found successfully', data,
             });
         } catch (err) {
@@ -40,18 +71,20 @@ export class SystemmonitorController {
         try {
             const existingRecord = await
                 this.systemmonitorservice.getdatabyid(recordId);
-            return response.status(HttpStatus.OK).json({
+            return response.status(200).json({
                 message: 'Record found successfully', existingRecord,
             });
         } catch (err) {
-            return response.status(err.status).json(err.response);
+            // return response.status(204).json(err);
+            return `This action returns a #$ param`;
+
         }
     }
     @Delete('/:id')
     async deleteRecord(@Res() response, @Param('id') recordId: string) {
         try {
             const deletedRecord = await this.systemmonitorservice.deletedata(recordId);
-            return response.status(HttpStatus.OK).json({
+            return response.status(200).json({
                 message: 'Record deleted successfully',
                 deletedRecord,
             });
@@ -66,7 +99,7 @@ export class SystemmonitorController {
         @Body() updatedto: UpdateSystemMonitorDto) {
         try {
             const existingrecord = await this.systemmonitorservice.updatesystemmonitor(recordId, updatedto);
-            return response.status(HttpStatus.OK).json({
+            return response.status(200).json({
                 message: 'record has been successfully updated',
                 existingrecord,
             });
