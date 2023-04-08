@@ -1,8 +1,9 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Query, Req, Res } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Query, Req, Res, Session } from '@nestjs/common';
 import { CreateSystemMonitorDto } from 'src/mycontroller/create-systemmonitor.dto';
 import { UpdateSystemMonitorDto } from 'src/mycontroller/update-systemmonitor.dto';
 import { SystemmonitorService } from 'src/systemmonitor/systemmonitor.service';
 import express from 'express';
+import * as secureSession from '@fastify/secure-session'
 @Controller('systemmonitor')
 export class SystemmonitorController {
 
@@ -33,8 +34,31 @@ export class SystemmonitorController {
         return `This action returns a # param`;
     }
 
+    @Get('/testsession')
+    findSession(@Session() session: secureSession.Session,
+        @Res() response: express.Response,
+    ) {
+        let visits = session.get('visits');
+        session.set('visits', visits ? visits + 1 : 1);
+        visits = session.get('visits');
+
+        response.send(JSON.stringify(visits));
+
+    }
+
     @Get('/getdata')
     async getAllCategories(
+        @Req() request: express.Request,
+        @Res() response: express.Response,
+    ) {
+        console.log(`${request.method} ${request.url}`); // GET /categories
+
+        const data = await this.systemmonitorservice.getAggregatedata();
+        response.send(JSON.stringify(data));
+    }
+
+    @Get('/getaggregate')
+    async getaggregate(
         @Req() request: express.Request,
         @Res() response: express.Response,
     ) {

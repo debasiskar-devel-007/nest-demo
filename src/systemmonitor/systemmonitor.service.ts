@@ -20,7 +20,25 @@ export class SystemmonitorService {
         return existingrecord;
     }
     async getAlldata(): Promise<ISSystemMonitoring[]> {
-        const data = await this.Systemmonitormodel.find();
+        const data = await this.Systemmonitormodel.find().lean();
+        if (!data || data.length == 0) {
+            throw new NotFoundException(' data not found!');
+        }
+        return data;
+    }
+
+    async getAggregatedata(): Promise<ISSystemMonitoring[]> {
+        const data = await this.Systemmonitormodel.aggregate([
+            {
+                '$addFields': {
+                    'mac_address': {
+                        '$concat': [
+                            '$mac_address', ' - ', 'Test'
+                        ]
+                    }
+                }
+            }
+        ]);
         if (!data || data.length == 0) {
             throw new NotFoundException(' data not found!');
         }

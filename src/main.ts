@@ -4,6 +4,8 @@ import { AppModule } from './app.module';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
+// import session from 'express-session';
+import secureSession from '@fastify/secure-session';
 
 async function bootstrap() {
   // const app = await NestFactory.create<NestExpressApplication>(
@@ -15,6 +17,23 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter(),
   );
+
+
+  await app.register(secureSession, {
+    secret: 'averylogphrasebiggerthanthirtytwochars',
+    salt: 'mq9hDxBVDbspDR6n',
+  });
+
+
+  // app.use(
+  //   session({
+  //     secret: 'my-secret',
+  //     resave: false,
+  //     saveUninitialized: false,
+  //   }),
+  // );
+
+
   app.useStaticAssets({
     root: join(__dirname, '..', 'public'),
     prefix: '/public/',
