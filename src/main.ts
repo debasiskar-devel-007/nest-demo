@@ -5,10 +5,10 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { ValidationPipe } from '@nestjs/common';
 import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
 import session from 'express-session';
-import secureSession from '@fastify/secure-session';
-import cookieParser from 'cookie-parser';
+// import secureSession from '@fastify/secure-session';
+// import cookieParser from 'cookie-parser';
 // import { IronSession } from "iron-session";
-import fastifyCookie from '@fastify/cookie';
+// import fastifyCookie from '@fastify/cookie';
 async function bootstrap() {
   // const app = await NestFactory.create<NestExpressApplication>(
   //   AppModule,
@@ -21,14 +21,14 @@ async function bootstrap() {
   );
 
 
-  await app.register(secureSession, {
-    secret: 'averylogphrasebiggerthanthirtytwochars',
-    salt: 'mq9hDxBVDbspDR6n',
-  });
+  // await app.register(secureSession, {
+  //   secret: 'averylogphrasebiggerthanthirtytwochars',
+  //   salt: 'mq9hDxBVDbspDR6n',
+  // });
 
-  await app.register(fastifyCookie, {
-    secret: 'my-secret', // for cookies signature
-  });
+  // await app.register(fastifyCookie, {
+  //   secret: 'my-secret', // for cookies signature
+  // });
 
   app.enableCors({
     credentials: true,
@@ -37,13 +37,13 @@ async function bootstrap() {
       'http://localhost:3001',
     ],
   });
-  app.use(cookieParser());
+  // app.use(cookieParser());
 
   app.use(
     session({
       secret: 'my-secret',
       resave: false,
-      saveUninitialized: true,
+      // saveUninitialized: true,
     }),
   );
 
@@ -64,6 +64,6 @@ async function bootstrap() {
   // app.useStaticAssets(join(__dirname, '..', 'public'));
   // app.setBaseViewsDir(join(__dirname, '..', 'views'));
   // app.setViewEngine('hbs');
-  await app.listen(3000);
+  await app.listen(4000);
 }
 bootstrap();

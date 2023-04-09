@@ -4,13 +4,15 @@ import { UpdateSystemMonitorDto } from 'src/mycontroller/update-systemmonitor.dt
 import { SystemmonitorService } from 'src/systemmonitor/systemmonitor.service';
 import express from 'express';
 import fastify from 'fastify';
+import { ClsService } from 'nestjs-cls';
+import { set } from 'mongoose';
 
-import * as secureSession from '@fastify/secure-session'
-import { withIronSessionApiRoute } from "iron-session/next";
+// import * as secureSession from '@fastify/secure-session'
+// import { withIronSessionApiRoute } from "iron-session/next";
 @Controller('systemmonitor')
 export class SystemmonitorController {
 
-    constructor(private readonly systemmonitorservice: SystemmonitorService) { }
+    constructor(private readonly systemmonitorservice: SystemmonitorService, private cls: ClsService) { }
 
     @Post()
     async createRecord(@Res() response, @Body() CreateSystemMonitorDto: CreateSystemMonitorDto) {
@@ -34,8 +36,10 @@ export class SystemmonitorController {
     }
     @Get('/ts')
     getViews(@Session() session: { views?: number }) {
+        console.log('in ts', session)
+        console.log('in ts 2', session)
         session.views = (session.views || 0) + 1;
-        console.log(session.views);
+        // console.log(session.views);
         return session.views;
     }
 
@@ -63,23 +67,32 @@ export class SystemmonitorController {
 
     @Get('/test')
     findOne(@Param('id') id: string) {
-        return `This action returns a # param`;
+        console.log('test .....');
+        this.cls.set('userId', 'u589uu' + Math.random())
+        this.cls.set('test', 't' + Math.random())
+        const userId = this.cls.get('userId');
+        const test = this.cls.get('test');
+        const userrole = this.cls.get('userrole');
+        console.log(userId, 'userId');
+        console.log(userrole, 'userrole');
+
+        return `This action returns a # param` + userId + '===' + userrole + '---' + test;
     }
 
-    @Get('/testsession')
-    findSession(@Session() session: secureSession.Session,
-        @Res() response: express.Response,
-    ) {
-        let visits = 0;
-        console.log(visits, 'bf');
-        if (session != null && session.get('visits') != null) visits = session.get('visits');
-        console.log(visits, 'af');
-        session.set('visits', visits ? visits + 1 : 1);
-        visits = session.get('visits');
+    // @Get('/testsession')
+    // findSession(@Session() session: secureSession.Session,
+    //     @Res() response: express.Response,
+    // ) {
+    //     let visits = 0;
+    //     console.log(visits, 'bf');
+    //     if (session != null && session.get('visits') != null) visits = session.get('visits');
+    //     console.log(visits, 'af');
+    //     session.set('visits', visits ? visits + 1 : 1);
+    //     visits = session.get('visits');
 
-        response.send(JSON.stringify(visits));
+    //     response.send(JSON.stringify(visits));
 
-    }
+    // }
 
     @Get('/getdata')
     async getAllCategories(

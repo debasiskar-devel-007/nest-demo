@@ -1,4 +1,4 @@
-service: nest-demo
+service: nest-demo2
 
 plugins:
   - serverless-offline
