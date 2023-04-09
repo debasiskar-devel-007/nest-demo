@@ -39,9 +39,9 @@ import { ClsModule } from 'nestjs-cls';
         // and use the setup method to
         // provide default store values.
         setup: (cls, req) => {
-          console.log(' cls --- ', req)
-          console.log(' cls headers  --- ', req.headers)
-          console.log(' cls query  --- ', req.query, req.query.authval)
+          // console.log(' cls --- ', req)
+          // console.log(' cls headers  --- ', req.headers)
+          // console.log(' cls query  --- ', req.query, req.query.authval)
           // if (req.headers['x-user-id'])
           // cls.set('userId', req.headers['x-user-id']);
           // cls.set('userId', "d2");

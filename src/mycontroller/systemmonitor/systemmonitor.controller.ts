@@ -78,6 +78,7 @@ export class SystemmonitorController {
         const userrole = this.cls.get('userrole');
         // console.log(userId, 'userId');
         console.log(userrole, 'userrole', test);
+        // console.log('cookei', document.cookie);
 
         return `This action returns a # param` + userId + '===' + userrole + '---' + test;
     }
