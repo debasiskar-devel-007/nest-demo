@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpStatus, Param, Post, Put, Query, Req, Res, Session } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Header, HttpStatus, Injectable, Param, Post, Put, Query, Req, Res, Session, UseGuards } from '@nestjs/common';
 import { CreateSystemMonitorDto } from 'src/mycontroller/create-systemmonitor.dto';
 import { UpdateSystemMonitorDto } from 'src/mycontroller/update-systemmonitor.dto';
 import { SystemmonitorService } from 'src/systemmonitor/systemmonitor.service';
@@ -6,13 +6,15 @@ import express from 'express';
 import fastify from 'fastify';
 import { ClsService } from 'nestjs-cls';
 import { set } from 'mongoose';
+import { RolesGuard } from 'src/roles.guard';
 
 // import * as secureSession from '@fastify/secure-session'
 // import { withIronSessionApiRoute } from "iron-session/next";
 @Controller('systemmonitor')
+@Injectable()
 export class SystemmonitorController {
 
-    constructor(private readonly systemmonitorservice: SystemmonitorService, private cls: ClsService) { }
+    constructor(private readonly systemmonitorservice: SystemmonitorService, private readonly cls: ClsService) { }
 
     @Post()
     async createRecord(@Res() response, @Body() CreateSystemMonitorDto: CreateSystemMonitorDto) {
@@ -66,17 +68,54 @@ export class SystemmonitorController {
 
 
     @Get('/test')
+    // @UseGuards(RolesGuard)
     findOne(@Param('id') id: string) {
-        console.log('test .....');
-        this.cls.set('userId', 'u589uu' + Math.random())
-        this.cls.set('test', 't' + Math.random())
+        // console.log('test .....');
+        // this.cls.set('userId', 'u589uu' + Math.random())
+        // this.cls.set('test', 't' + Math.random())
         const userId = this.cls.get('userId');
         const test = this.cls.get('test');
         const userrole = this.cls.get('userrole');
-        console.log(userId, 'userId');
-        console.log(userrole, 'userrole');
+        // console.log(userId, 'userId');
+        console.log(userrole, 'userrole', test);
 
         return `This action returns a # param` + userId + '===' + userrole + '---' + test;
+    }
+
+    @Get('/auth')
+    // @UseGuards(RolesGuard)
+    auth(@Param('id') id: string) {
+        // console.log('test .....');
+
+        // this.cls.set('userrole', '1')
+        const userrole = this.cls.get('userrole');
+        // this.cls.set('userId', 'developer')
+        const userId = this.cls.get('userId');
+        console.log(userrole, 'userrole', userId);
+        // return `This action returns a #  auth done`;
+        return `This action returns a # param ` + userId + '===' + userrole + '---';
+
+    }
+
+
+    @Get('/headers')
+    @Header("x-user-id", "MyApp")
+    async getHelloAlt(@Res() res: express.Response) {
+        // return res.setHeader('x-access-token', 1).json({ hello: 'world' });
+        // res.cookie('dd', '000000')
+        // res.send('cookei set');
+
+        await this.cls.run(async () => {
+            this.cls.set('userId', 'cron');
+            // await this.someService.doTheThing();
+        });
+
+
+        // res.setHeader('Authorization', 'Bearer ' + 'dddd');
+        res.send({
+            success: true,
+            'ddd': 'nnnn'
+        })
     }
 
     // @Get('/testsession')

@@ -4,10 +4,12 @@ import { CreateSystemMonitorDto } from 'src/mycontroller/create-systemmonitor.dt
 import { ISSystemMonitoring } from 'src/mycontroller/system_monitoring.interface';
 import { Model } from "mongoose";
 import { UpdateSystemMonitorDto } from 'src/mycontroller/update-systemmonitor.dto';
+import { ClsService } from 'nestjs-cls';
+
 
 @Injectable()
 export class SystemmonitorService {
-    constructor(@InjectModel('Systemmonitor') private Systemmonitormodel: Model<ISSystemMonitoring>) { }
+    constructor(@InjectModel('Systemmonitor') private Systemmonitormodel: Model<ISSystemMonitoring>, private cls: ClsService) { }
     async createsysemmonitor(CreateSystemMonitorDto: CreateSystemMonitorDto): Promise<ISSystemMonitoring> {
         const newsystemmonitor = await new this.Systemmonitormodel(CreateSystemMonitorDto);
         return newsystemmonitor.save();
@@ -57,5 +59,12 @@ export class SystemmonitorService {
             throw new NotFoundException(` #${systemmonitorid} not found`);
         }
         return deleteddata;
+    }
+
+    async getclsdata(): Promise<String> {
+
+        console.log('service data ', this.cls.get('userId'));
+
+        return this.cls.get('userId');
     }
 }
