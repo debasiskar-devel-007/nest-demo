@@ -64,6 +64,25 @@ async function bootstrap() {
   // app.useStaticAssets(join(__dirname, '..', 'public'));
   // app.setBaseViewsDir(join(__dirname, '..', 'views'));
   // app.setViewEngine('hbs');
+
+
+
+  
+  // app.useStaticAssets({
+  //   root: join(__dirname, '..', 'public'),
+  //   prefix: '/public/',
+  // });
+  // app.setViewEngine({
+  //   engine: {
+  //     handlebars: require('handlebars'),
+  //   },
+  //   templates: join(__dirname, '..', 'views'),
+  // });
+
+
+
+
+
   await app.listen(4000);
 }
 bootstrap();

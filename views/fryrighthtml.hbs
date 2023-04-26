@@ -35,6 +35,35 @@
 
 <body>
 
+
+    {{message.a}}
+    <hr>
+
+    {{message}}
+
+    <div>-----------------------------------</div>
+    <hr>
+    {{message.b}}
+    <hr>
+    {{b}}
+
+
+
+        {{#if message.b}}
+                 something B
+
+        {{/if}}
+
+         {{#if message.c}}
+                 something C
+
+        {{/if}}
+
+
+        <hr>
+        {{!-- {{> header }} --}}
+    
+
     <div className="home_page">
         <div className="bannerblock homebanner">
             <div className="container">

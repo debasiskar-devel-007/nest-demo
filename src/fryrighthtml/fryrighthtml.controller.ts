@@ -7,6 +7,6 @@ export class FryrighthtmlController {
     @Get()
     @Render('fryrighthtml.hbs')
     root() {
-        return { message: 'Hello world!' };
+        return { message: {a:'Hello world! !!! ',c:"dd" }};
     }
 }
