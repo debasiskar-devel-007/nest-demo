@@ -21,14 +21,16 @@ async function bootstrap() {
     templates: join(__dirname, '..', 'views'),
     options: {
       partials: {
-        header: 'partials/header.hbs',
-        footer: 'partials/footer.hbs'
+        header: './partials/header.hbs',
+        // header: join(__dirname, '..', 'views') + '/header.hbs',
+        footer: './partials/footer.hbs'
+        // footer: join(__dirname, '..', 'views') + '/partials/footer.hbs'
       }
     }
 
 
   });
   // app.registerPartials
-  await app.listen(3000);
+  await app.listen(4000);
 }
 bootstrap();

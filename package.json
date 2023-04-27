@@ -18,7 +18,9 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "forcepull": "git fetch --all && git reset --hard "
+    "forcepull": "git fetch --all && git reset --hard ",
+    "build:deploy": "nest build && sls deploy --aws-profile pece",
+    "build:serve": "nest build && sls offline"
   },
   "dependencies": {
     "@anzp/aws-lambda-cookie": "^2.0.0",
