@@ -1,36 +1,22 @@
 import { NestFactory } from '@nestjs/core';
-import { NestFastifyApplication, FastifyAdapter } from '@nestjs/platform-fastify';
-import { AppModule } from './app.module';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestFastifyApplication>(
+  const app = await NestFactory.create<NestExpressApplication>(
     AppModule,
-    new FastifyAdapter(),
   );
-  app.useStaticAssets({
-    root: join(__dirname, '..', 'public'),
-    prefix: '/public/',
+  const hbs = require("hbs");
+  const path = require("path")
 
-  });
-  app.setViewEngine({
-    engine: {
-      handlebars: require('handlebars'),
-
-    },
-    templates: join(__dirname, '..', 'views'),
-    options: {
-      partials: {
-        header: './partials/header.hbs',
-        // header: join(__dirname, '..', 'views') + '/header.hbs',
-        footer: './partials/footer.hbs'
-        // footer: join(__dirname, '..', 'views') + '/partials/footer.hbs'
-      }
-    }
+  app.useStaticAssets(join(__dirname, '..', 'public'));
+  app.setBaseViewsDir(join(__dirname, '..', 'views'));
+  app.setViewEngine('hbs');
+  // hbs.registerPartials(__dirname + '/views/partials');
+  hbs.registerPartials(join(__dirname, "..", "views/partials/"));
 
 
-  });
-  // app.registerPartials
   await app.listen(4000);
 }
 bootstrap();

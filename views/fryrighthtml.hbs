@@ -59,11 +59,35 @@
 
     {{/if}}
 
+    {{message.html}}
+
+    {{!-- {{ render 'text-field' label="First name" id="author-first-name" }} --}}
 
     <hr>
-    {{!-- {{> header }} --}}
+    <div>Arr1 iteration(Array)</div>
+
+    {{#each message.arr1}}
+    <div>
+        <span> Data : {{this}} - {{@key}} </span>
+    </div>
+    {{/each}}
+
+
     <hr>
-    {{!-- {{> footer }} --}}
+    <div>Arr2 iteration (Array of Objects)</div>
+    {{!-- {{message.arr2}} --}}
+
+    {{#each message.arr2}}
+    <div>
+        <span> Data : {{name}} - {{val}} - {{@key}} </span>
+    </div>
+    {{/each}}
+
+
+    <hr>
+    {{> header }}
+    <hr>
+    {{> footer }}
 
 
 
