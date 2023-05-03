@@ -1,11 +1,16 @@
 // import { Controller } from '@nestjs/common';
 import { Get, Controller, Render } from '@nestjs/common';
+import { AppService } from 'src/app.service';
+// import { AppService } from './app.service';
+
 
 
 @Controller('fryrighthtml')
 export class FryrighthtmlController {
+    constructor(private  appService: AppService) { }
+
     @Get()
-    @Render('fryrighthtml.hbs')
+    @Render('fryrighthtml.hbs',)
     root() {
         return {
             message: {
@@ -20,7 +25,8 @@ export class FryrighthtmlController {
                     { name: "d", val: 3 },
                     { name: "e", val: 2 },
                     { name: "f", val: 0 },
-                ]
+                ],
+                header: this.appService.getFrontendheader()
             }
         };
     }
